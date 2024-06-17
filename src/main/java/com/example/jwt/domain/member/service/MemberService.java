@@ -3,10 +3,13 @@ package com.example.jwt.domain.member.service;
 import com.example.jwt.global.jwt.JwtProvider;
 import com.example.jwt.domain.member.entity.Member;
 import com.example.jwt.domain.member.repository.MemberRepository;
+import jakarta.persistence.metamodel.SingularAttribute;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.Optional;
 
 @Service
@@ -43,4 +46,9 @@ public class MemberService {
 
         return jwtProvider.genToken(member.toClaims(), 60 * 60 * 24 * 365);
     }
+
+    public Optional<Member> findById(long id) {
+        return memberRepository.findById(id);
+    }
+
 }

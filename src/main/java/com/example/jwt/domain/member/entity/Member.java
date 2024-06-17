@@ -1,6 +1,7 @@
 package com.example.jwt.domain.member.entity;
 
 
+import com.example.jwt.global.jpa.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -38,4 +40,12 @@ public class Member extends BaseEntity {
 
         return authorities;
     }
+
+    public Map<String, Object> toClaims() {
+        return Map.of(
+                "id", getId(),
+                "username", getUsername()
+        );
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.example.jwt.domain.article.service;
 
-import aj.org.objectweb.asm.commons.Remapper;
 import com.example.jwt.domain.article.entity.Article;
 import com.example.jwt.domain.article.repository.ArticleRepository;
 import com.example.jwt.domain.member.entity.Member;
@@ -8,6 +7,7 @@ import com.example.jwt.global.rsData.RsData;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.nio.channels.FileChannel;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ArticleService {
     private final ArticleRepository articleRepository;
-    public RsData<Article> write(Member author, String subject, String content){
+    public RsData<Article> write(Member author, String subject, String content) {
         Article article = Article.builder()
                 .author(author)
                 .subject(subject)
@@ -33,7 +33,7 @@ public class ArticleService {
     }
 
     public List<Article> findAll() {
-         return articleRepository.findAll();
+        return articleRepository.findAll();
     }
 
     public Optional<Article> findById(Long id) {
@@ -41,7 +41,7 @@ public class ArticleService {
     }
 
     public RsData canModify(Member actor, Article article) {
-        if(Objects.equals(actor.getId(), article.getAuthor().getId())){
+        if (Objects.equals(actor.getId(), article.getAuthor().getId())) {
             return RsData.of(
                     "S-1",
                     "게시물을 수정할 수 있습니다."
@@ -64,5 +64,23 @@ public class ArticleService {
                 "%d번 게시물이 수정되었습니다.".formatted(article.getId()),
                 article
         );
+    }
+
+    public RsData<Article> canDelete(Member actor, Article article) {
+        if (Objects.equals(actor.getId(), article.getAuthor().getId())) {
+            return RsData.of(
+                    "S-1",
+                    "게시물을 삭제할 수 있습니다."
+            );
+        }
+
+        return RsData.of(
+                "F-1",
+                "게시물을 삭제할 수 없습니다."
+        );
+    }
+
+    public void deleteById(Long id) {
+        articleRepository.deleteById(id);
     }
 }

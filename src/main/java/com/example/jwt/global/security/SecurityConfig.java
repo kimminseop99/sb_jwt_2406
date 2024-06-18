@@ -25,6 +25,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers("/api/*/member/login").permitAll() // 로그인은 누구나 가능
+                                .requestMatchers("/api/*/articles").permitAll() // 글 보기는 누구나 가능
                                 .anyRequest().authenticated() // 나머지는 인증된 사용자만 가능
                 )
                 .cors(
@@ -35,7 +36,7 @@ public class SecurityConfig {
                 ) // CSRF 토큰 끄기
                 .httpBasic(
                         httpBasic -> httpBasic.disable()
-                ) // httpBaic 로그인 방식 끄기
+                ) // httpBasic 로그인 방식 끄기
                 .formLogin(
                         formLogin -> formLogin.disable()
                 ) // 폼 로그인 방식 끄기

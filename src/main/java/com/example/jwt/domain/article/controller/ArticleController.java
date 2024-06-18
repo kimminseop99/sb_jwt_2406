@@ -1,4 +1,4 @@
-package com.example.jwt.domain.article.contoller;
+package com.example.jwt.domain.article.controller;
 
 import com.example.jwt.domain.article.entity.Article;
 import com.example.jwt.domain.article.service.ArticleService;
@@ -22,28 +22,26 @@ public class ArticleController {
 
     @AllArgsConstructor
     @Getter
-    public static class ArticlesResponse{
+    public static class ArticlesResponse {
         private final List<Article> articles;
-
     }
 
     @GetMapping(value = "")
-    @Operation(summary = "게시물들")
-    public RsData<ArticleResponse> article(){
+    @Operation(summary = "다건조회")
+    public RsData<ArticlesResponse> articles(){
         List<Article> articles = articleService.findAll();
 
         return RsData.of(
                 "S-1",
                 "성공",
-                new ArticleResponse(articles)
+                new ArticlesResponse(articles)
         );
     }
 
     @AllArgsConstructor
     @Getter
-    public static class ArticleResponse{
+    public static class ArticleResponse {
         private final Article article;
-
     }
 
     @GetMapping(value = "/{id}")
